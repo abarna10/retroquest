@@ -14,27 +14,184 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @import 'color-vars';
 
-#createContainer {
-  background-color: $modal-blur;
+:host {
+  background-color: $clouds;
   display: flex;
   height: 100%;
   width: 100%;
+  overflow: auto;
+  box-sizing: border-box;
 
-  #app-content {
-    background-color: $white;
+  .separator {
+    width: 100%;
+    height: 2px;
     border-radius: 3px;
-    box-shadow: 0 3px 30px 0 opacity($black, .25);
+    background-color: $wet-asphalt;
+    opacity: .1;
+    margin-top: 48px;
+    margin-bottom: 48px;
+  }
+
+  .continue-button {
+    width: 100%;
+    margin-top: 24px;
+    font-size: 1.2rem;
+  }
+
+  .social-links-section {
+    width: 100%;
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    font-size: .8rem;
+
+    .labs-text {
+      font-size: inherit;
+      color: opacity($wet-asphalt, .5);
+
+      .labs-link {
+        color: $confused-blue;
+        font-weight: bold;
+        font-size: inherit;
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    .vertical-seperator {
+      height: 16px;
+      width: 2px;
+      border-radius: 3px;
+      background-color: $wet-asphalt;
+      opacity: .1;
+      display: inline-block;
+      margin: 0 12px;
+    }
+
+    .github-link {
+      font-weight: bold;
+      font-size: inherit;
+      padding: 0;
+      margin: 0;
+      color: inherit;
+    }
+  }
+
+  .user-input-section {
+    width: 100%;
+    margin-top: 12px;
+    color: inherit;
+    box-sizing: border-box;
+    position: relative;
+
+    .label {
+      font-weight: bold;
+      text-transform: capitalize;
+      font-size: .8rem;
+    }
+
+    input {
+      width: 100%;
+      border-radius: 6px;
+      background-color: $white;
+      outline: none;
+      border: none;
+      padding: 12px;
+      margin: 12px 0 0 0;
+      height: 35px;
+      box-sizing: border-box;
+      font-size: .8rem;
+
+      &[type='password'] {
+        padding-right: 36px;
+      }
+
+      &::placeholder {
+        opacity: .3;
+      }
+
+    }
+
+    .reveal-password-icon {
+      right: 12px;
+      top: 12px + 26px;
+      position: absolute;
+      box-sizing: border-box;
+      display: inline-block;
+      opacity: .5;
+    }
+
+  }
+
+  .login-create-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 36px;
+    box-sizing: border-box;
+
+    rq-button {
+      background-color: $turquoise;
+      width: 100px;
+      font-size: 1rem;
+      box-shadow: none;
+
+      &.unselected {
+        box-shadow: none;
+        z-index: 0;
+        background-color: opacity($turquoise, .15);
+        color: opacity($wet-asphalt, .25);
+      }
+
+      &.selected {
+        z-index: 1;
+      }
+
+    }
+
+    .login-button {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .create-button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .page-container {
+    background-color: transparent;
+    border-radius: 3px;
     display: block;
     margin: auto;
-    max-width: 450px;
-    padding: 24px 48px;
+    padding: 24px;
 
-    #logo {
-      max-width: 100%;
-      width: auto;
+    width: 320px;
+    height: auto;
+
+    .heading {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .heading-logo {
+        width: 85%;
+      }
+    }
+
+    .sub-heading {
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      opacity: .5;
+      font-size: .9rem;
     }
 
     .rq-team-controls {
@@ -49,4 +206,5 @@
       margin-top: 1.5rem;
     }
   }
+
 }

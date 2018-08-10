@@ -24,10 +24,12 @@ import { RouterModule } from '@angular/router';
 import { AppTitleComponent } from './components/app-title/app-title.component';
 import { BrandFooterComponent } from './components/brand-footer/brand-footer.component';
 import { RecaptchaModule } from 'ng-recaptcha';
+import {ControlsModule} from "../controls/controls.module";
 
 @NgModule({
   imports: [
     CommonModule,
+    ControlsModule,
     FormsModule,
     RouterModule.forChild([
       {path: 'create', component: CreateComponent},

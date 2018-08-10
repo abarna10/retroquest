@@ -44,6 +44,19 @@ export class CreateComponent {
   confirmPassword: string;
   errorMessage: string;
 
+  loginIsSelected = true;
+  revealPassword = false;
+  revealConfirmPassword = false;
+
+
+  public onTogglePasswordReveal(): void {
+    this.revealPassword = !this.revealPassword;
+  }
+
+  public onToggleConfirmPasswordReveal(): void {
+    this.revealConfirmPassword = !this.revealConfirmPassword;
+  }
+
   requestCaptchaStateAndCreateTeam() {
     if (!this.validateInput()) {
       return;
@@ -106,5 +119,17 @@ export class CreateComponent {
     this.errorMessage = error.error.message ? error.error.message : `${error.status} ${error.error}`;
     console.error('A registration error occurred: ', this.errorMessage);
     return of(this.errorMessage);
+  }
+
+  public onCreateBoardButtonClicked(): void {
+    if(this.loginIsSelected) {
+      this.loginIsSelected = false;
+    }
+  }
+
+  public onLoginBoardButtonClicked(): void {
+    if ( !this.loginIsSelected) {
+      this.loginIsSelected = true;
+    }
   }
 }

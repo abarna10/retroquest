@@ -15,61 +15,169 @@
   ~ limitations under the License.
   -->
 
-<div id="createContainer">
-  <div id="app-content">
-    <re-captcha
-      #captchaRef="reCaptcha"
-      size="invisible"
-      siteKey="6LeZOmMUAAAAAOq4uXmluNuIio7XGx7U-ncmOzGT"
-      (resolved)="$event && create($event)"
-    ></re-captcha>
-    <img src="/assets/RetroQuest.png" title="RetroQuest Logo" id="logo"/>
-    <div class="rq-team-controls">
-      <form id="createForm" class="rq-form">
-        <div class="rq-form-header">
-          <div>Create a new retro board</div>
-          <a id="loginBoard" routerLink="/login">Already have a board? Log in!</a>
-        </div>
+<div class="page-container">
 
-        <div class="rq-form-body">
-          <div class="rq-input-group">
-            <label for="teamNameInput">Board name</label>
-            <input
-                   id="teamNameInput"
-                   class="rq-input"
-                   name="teamName"
-                   placeholder="ex. Mustang Design Retro"
-                   [(ngModel)]="teamName"/>
-            <span class="rq-validation-message">
-              Names must not contain special characters.
-            </span>
-          </div>
-          <div class="rq-input-group">
-            <label for="teamPasswordInput">Password</label>
-            <input id="teamPasswordInput"
-                   class="rq-input"
-                   name="password"
-                   type="password"
-                   placeholder="8 or more characters with a mix of numbers and letters"
-                   [(ngModel)]="password"/>
-          </div>
-          <div class="rq-input-group">
-            <label for="teamPasswordConfirmInput">Confirm Password</label>
-            <input id="teamPasswordConfirmInput"
-                   class="rq-input"
-                   name="confirmPassword"
-                   type="password"
-                   placeholder="ex. G0Furth3r"
-                   [(ngModel)]="confirmPassword"/>
-          </div>
-          <span id="errorMessage" class="rq-error-message">{{errorMessage}}</span>
-          <button id="createRetroButton" class="rq-button" (click)="requestCaptchaStateAndCreateTeam()">
-            Create Board
-          </button>
-        </div>
-      </form>
+  <re-captcha
+    #captchaRef="reCaptcha"
+    size="invisible"
+    siteKey="6LeZOmMUAAAAAOq4uXmluNuIio7XGx7U-ncmOzGT"
+    (resolved)="$event && create($event)"
+  ></re-captcha>
+
+  <div class="heading-container">
+    <div class="heading">
+      <img class="heading-logo" src="/assets/RetroQuest.png" title="RetroQuest Logo"/>
     </div>
-    <rq-brand-footer></rq-brand-footer>
+    <div class="sub-heading">A retro tool for agile teams!</div>
   </div>
 
+  <div class="separator"></div>
+
+  <div class="login-create-container">
+    <rq-button
+      [type]="'primary'"
+      text="login"
+      class="login-button"
+      [ngClass]="{
+        'selected': loginIsSelected,
+        'unselected': !loginIsSelected
+      }"
+      (click)="onLoginBoardButtonClicked()"
+    ></rq-button>
+    <rq-button
+      [type]="'primary'"
+      text="create"
+      class="create-button"
+      [ngClass]="{
+        'selected': !loginIsSelected,
+        'unselected': loginIsSelected
+      }"
+      (click)="onCreateBoardButtonClicked()"
+    ></rq-button>
+  </div>
+
+  <div class="user-input-section">
+    <div class="label">board name</div>
+    <input
+      [type]="'text'"
+      class="board-name-input"
+      [(ngModel)]="teamName"
+      placeholder="ex. Mustang Design Retro"
+    />
+  </div>
+
+  <div class="user-input-section">
+    <div class="label">password</div>
+    <div class="password-container">
+      <input
+        [type]="revealPassword ? 'text' : 'password'"
+        class="password-input"
+        [(ngModel)]="password"/>
+      <div
+        class="far fa-eye reveal-password-icon"
+        [ngClass]="{
+          'fa-eye-slash': !revealPassword
+        }"
+        (click)="onTogglePasswordReveal()"
+      ></div>
+    </div>
+
+  </div>
+
+  <div class="user-input-section" *ngIf="!loginIsSelected">
+    <div class="label">confirm password</div>
+    <div class="password-container">
+      <input
+        [type]="revealConfirmPassword ? 'text' : 'password'"
+        class="password-input"
+        [(ngModel)]="confirmPassword"/>
+      <div
+        class="far fa-eye reveal-password-icon"
+        [ngClass]="{
+          'fa-eye-slash': !revealConfirmPassword
+        }"
+        (click)="onToggleConfirmPasswordReveal()"
+      ></div>
+    </div>
+  </div>
+
+  <rq-button
+    class='continue-button'
+    [type]="'primary'"
+    text="{{loginIsSelected ? 'login' : 'create board'}}"
+  ></rq-button>
+
+  <div class="social-links-section">
+    <a class="labs-text">Powered By <a
+      class="labs-link"
+      href="https://thehubat.ford.com/groups/fordlabs"
+      target="_blank"
+    >FordLabs</a>
+    </a>
+
+    <span class="vertical-seperator"></span>
+
+    <a
+      class="github-link"
+      href="https://github.com/FordLabs/retroquest"
+      target="_blank"
+    >Github</a>
+
+  </div>
 </div>
+
+<!--<div id="app-content">-->
+<!--<re-captcha-->
+<!--#captchaRef="reCaptcha"-->
+<!--size="invisible"-->
+<!--siteKey="6LeZOmMUAAAAAOq4uXmluNuIio7XGx7U-ncmOzGT"-->
+<!--(resolved)="$event && create($event)"-->
+<!--&gt;</re-captcha>-->
+<!--<img src="/assets/RetroQuest.png" title="RetroQuest Logo" id="logo"/>-->
+<!--<div class="rq-team-controls">-->
+<!--<form id="createForm" class="rq-form">-->
+<!--<div class="rq-form-header">-->
+<!--<div>Create a new retro board</div>-->
+<!--<a id="loginBoard" routerLink="/login">Already have a board? Log in!</a>-->
+<!--</div>-->
+
+<!--<div class="rq-form-body">-->
+<!--<div class="rq-input-group">-->
+<!--<label for="teamNameInput">Board name</label>-->
+<!--<input-->
+<!--id="teamNameInput"-->
+<!--class="rq-input"-->
+<!--name="teamName"-->
+<!--placeholder="ex. Mustang Design Retro"-->
+<!--[(ngModel)]="teamName"/>-->
+<!--<span class="rq-validation-message">-->
+<!--Names must not contain special characters.-->
+<!--</span>-->
+<!--</div>-->
+<!--<div class="rq-input-group">-->
+<!--<label for="teamPasswordInput">Password</label>-->
+<!--<input id="teamPasswordInput"-->
+<!--class="rq-input"-->
+<!--name="password"-->
+<!--type="password"-->
+<!--placeholder="8 or more characters with a mix of numbers and letters"-->
+<!--[(ngModel)]="password"/>-->
+<!--</div>-->
+<!--<div class="rq-input-group">-->
+<!--<label for="teamPasswordConfirmInput">Confirm Password</label>-->
+<!--<input id="teamPasswordConfirmInput"-->
+<!--class="rq-input"-->
+<!--name="confirmPassword"-->
+<!--type="password"-->
+<!--placeholder="ex. G0Furth3r"-->
+<!--[(ngModel)]="confirmPassword"/>-->
+<!--</div>-->
+<!--<span id="errorMessage" class="rq-error-message">{{errorMessage}}</span>-->
+<!--<button id="createRetroButton" class="rq-button" (click)="requestCaptchaStateAndCreateTeam()">-->
+<!--Create Board-->
+<!--</button>-->
+<!--</div>-->
+<!--</form>-->
+<!--</div>-->
+<!--<rq-brand-footer></rq-brand-footer>-->
+<!--</div>-->
