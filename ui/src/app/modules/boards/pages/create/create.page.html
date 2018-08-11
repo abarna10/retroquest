@@ -105,6 +105,7 @@
     class='continue-button'
     [type]="'primary'"
     text="{{loginIsSelected ? 'login' : 'create board'}}"
+    (click)="onContinueButtonClicked()"
   ></rq-button>
 
   <div class="social-links-section">

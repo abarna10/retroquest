@@ -99,7 +99,7 @@ export class CreateComponent {
       return false;
     }
 
-    if (this.confirmPassword !== this.password) {
+    if (!this.loginIsSelected && this.confirmPassword !== this.password) {
       this.errorMessage = 'Please enter matching passwords';
       return false;
     }
@@ -109,6 +109,20 @@ export class CreateComponent {
   }
 
   private handleResponse(response): void {
+    if (!this.loginIsSelected) {
+      this.handleCreateResponse(response);
+    } else {
+      this.handleLoginResponse(response);
+    }
+  }
+
+  private handleLoginResponse(response): void {
+    AuthService.setToken(response.body);
+    const teamId = response.headers.get('location');
+    this.router.navigateByUrl(`/team/${teamId}`);
+  }
+
+  private handleCreateResponse(response): void {
     AuthService.setToken(response.body);
     const teamUrl = response.headers.get('location');
     this.router.navigateByUrl(teamUrl);
@@ -122,14 +136,45 @@ export class CreateComponent {
   }
 
   public onCreateBoardButtonClicked(): void {
-    if(this.loginIsSelected) {
+    if (this.loginIsSelected) {
       this.loginIsSelected = false;
     }
   }
 
   public onLoginBoardButtonClicked(): void {
-    if ( !this.loginIsSelected) {
+    if (!this.loginIsSelected) {
       this.loginIsSelected = true;
     }
+  }
+
+  public onContinueButtonClicked(): void {
+    if (!this.loginIsSelected) {
+      this.requestCaptchaStateAndCreateTeam();
+    } else {
+      this.requestCaptchaStateAndLogIn();
+    }
+  }
+
+  public requestCaptchaStateAndLogIn(): void {
+    if (!this.validateInput()) {
+      return;
+    }
+
+    this.teamService.isCaptchaEnabledForTeam(this.teamName).pipe(
+      map(response => JSON.parse(response.body).captchaEnabled),
+      concatMap(captchaEnabled => this.loginOrExecuteReCaptcha(captchaEnabled))
+    ).subscribe(
+      response => this.handleResponse(response),
+      error => this.handleError(error)
+    );
+  }
+
+  private loginOrExecuteReCaptcha(captchaEnabled): Observable<HttpResponse<Object>> {
+    if (captchaEnabled) {
+      this.recaptchaComponent.reset();
+      this.recaptchaComponent.execute();
+      return EMPTY;
+    }
+    return this.teamService.login(this.teamName, this.password, null);
   }
 }
