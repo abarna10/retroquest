@@ -108,13 +108,35 @@ export class TaskComponent {
 
   public onKeyDown(keyEvent: KeyboardEvent) {
     if ((this.task.message.length >= this.maxMessageLength)
-    && !this.keyEventIsAnAction(keyEvent)) {
+      && !this.keyEventIsAnAction(keyEvent)) {
       keyEvent.preventDefault();
     }
   }
 
   private keyEventIsAnAction(keyEvent: KeyboardEvent): boolean {
     return keyEvent.keyCode === BACKSPACE_KEY || keyEvent.keyCode === DELETE_KEY;
+  }
+
+  public placeCaretAtEnd() {
+
+    const el = this.editableTextArea.nativeElement;
+
+    console.log(' HERE')
+    el.focus();
+    if (typeof window.getSelection !== 'undefined'
+      && typeof document.createRange !== 'undefined') {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else if (typeof document.body.createTextRange !== 'undefined') {
+      const textRange = document.body.createTextRange();
+      textRange.moveToElementText(el);
+      textRange.collapse(false);
+      textRange.select();
+    }
   }
 }
 

@@ -30,7 +30,7 @@
       class="content-message editable-div"
       contenteditable="true"
       [textContent]="task.message"
-      (input)="task.message = content_value.textContent"
+      (input)="task.message = content_value.textContent; placeCaretAtEnd()"
       (keydown.enter)="forceBlur()"
       (blur)="toggleEditMode()"
       (keydown)="onKeyDown($event)"
